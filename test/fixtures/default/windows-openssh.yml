@@ -1,6 +1,6 @@
 client:
   files:
-    /etc/ssh/ssh_config: >
+    'C:\ProgramData\ssh\ssh_config': >
       Host test
         HostName 127.0.0.1
         Port 2222
