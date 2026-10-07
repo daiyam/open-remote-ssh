@@ -26,5 +26,6 @@ server:
   username: openremotessh
   password: Open-Remote-SSH-1
 
-output: |-
-  ProxyCommand connected
+tests:
+  output: |-
+    ProxyCommand connected
