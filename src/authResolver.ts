@@ -211,7 +211,7 @@ export class RemoteSSHResolver implements vscode.RemoteAuthorityResolver, vscode
                     let proxyCommand = proxyArgs.shift()!;
 
                     let options = {};
-                    if (isWindows && /\.(bat|cmd)$/.test(proxyCommand)) {
+                    if (isWindows && (/\.(bat|cmd)$/.test(proxyCommand) || proxyCommand.includes(' '))) {
                         proxyCommand = `"${proxyCommand}"`;
                         proxyArgs = proxyArgs.map((arg) => arg.includes(' ') ? `"${arg}"` : arg);
                         options = { shell: true, windowsHide: true, windowsVerbatimArguments: true };
