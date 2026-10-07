@@ -29,7 +29,7 @@ server:
   username: openremotessh
   password: openremotessh
 
-tests:
+test:
   hosts:
     - test
     - alias

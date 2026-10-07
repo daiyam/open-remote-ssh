@@ -25,3 +25,7 @@ server:
   platform: windows
   username: openremotessh
   password: Open-Remote-SSH-1
+
+test:
+  output: |-
+    Spawning ProxyCommand: connect.exe 127.0.0.1 2222

@@ -25,3 +25,7 @@ server:
   platform: windows
   username: openremotessh
   password: Open-Remote-SSH-1
+
+test:
+  error: |-
+    Spawning ProxyCommand: C:\Program Files\Git\mingw64\bin\connect.exe 127.0.0.1 2222

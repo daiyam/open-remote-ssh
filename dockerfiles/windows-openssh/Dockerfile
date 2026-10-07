@@ -24,8 +24,6 @@ RUN `
     Remove-Item -Path $dest; `
     Remove-Item -Path C:\OpenSSH-Temp -Recurse; `
     `
-    Get-ChildItem -Path C:\ -Filter connect.exe -Recurse -Depth 20 -ErrorAction SilentlyContinue; `
-    `
     # Install
     C:\OpenSSH\install-sshd.ps1
 
