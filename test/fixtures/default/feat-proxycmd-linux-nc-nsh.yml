@@ -6,9 +6,7 @@ client:
         Port 2222
         User openremotessh
         Password openremotessh
-        # ProxyCommand bash -c 'nc %h %p'
         ProxyCommand nc %h %p
-        # ProxyCommand nc %h 22
     /bin/vscodium/app/product.json: >
       {
         "nameShort": "VSCodium",
@@ -26,3 +24,7 @@ server:
   image: local-ubuntu-bash
   username: openremotessh
   password: openremotessh
+
+test:
+  output: |-
+    Spawning ProxyCommand: nc.exe 127.0.0.1 2222
