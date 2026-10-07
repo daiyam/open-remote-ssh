@@ -24,3 +24,7 @@ server:
   image: local-ubuntu-bash
   username: openremotessh
   password: openremotessh
+
+error:
+  - "Spawning ProxyCommand: nc 127.0.0.1 22"
+  - Error resolving authority

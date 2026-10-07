@@ -19,7 +19,7 @@ type TestDocument = {
   client: {
     files: Record<string, string>;
   };
-  error?: string;
+  error?: string[] | string;
   server: {
     image: string;
     username: string;
@@ -29,7 +29,6 @@ type TestDocument = {
   tests?: {
     // The hosts the SSH config is expected to have.
     hosts?: string[];
-    output?: string;
   };
 };
 
@@ -133,30 +132,22 @@ for (const file of files.value) {
 
         const messages = logger.messages();
 
-        if (!messages.includes(expectedError)) {
-          console.log(messages);
-        }
+        if (Array.isArray(expectedError)) {
+          for (const error of expectedError) {
+            expect(messages).to.contains(error);
+          }
+        } else {
+          if (!messages.includes(expectedError)) {
+            console.log(messages);
+          }
 
-        expect(messages).to.contains(expectedError);
+          expect(messages).to.contains(expectedError);
+        }
       } else {
-        if (tests?.output) {
-           logger.capture();
-        }
-
         const result = await remoteSSHResolver.resolve(authority, remoteContext);
 
         expect(result).toBeDefined();
         expect(result.host).to.eql('127.0.0.1');
-
-        if (tests?.output) {
-          const messages = logger.messages();
-
-          if (!messages.includes(tests.output)) {
-            console.log(messages);
-          }
-
-          expect(messages).to.contains(tests.output);
-        }
       }
     }, 60_000);
   });

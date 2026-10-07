@@ -5,6 +5,8 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2022
 SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN `
+    where.exe connect.exe; `
+    `
     # Install
     Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
