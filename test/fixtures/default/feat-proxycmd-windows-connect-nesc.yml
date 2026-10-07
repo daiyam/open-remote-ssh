@@ -6,7 +6,6 @@ client:
         Port 2222
         User openremotessh
         Password Open-Remote-SSH-1
-        # ProxyCommand C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "$tcp = [System.Net.Sockets.TcpClient]::new('%h', [int]%p); [Console]::Error.WriteLine('ProxyCommand connected'); $stream = $tcp.GetStream(); $send = [Console]::OpenStandardInput().CopyToAsync($stream); $receive = $stream.CopyToAsync([Console]::OpenStandardOutput()); [System.Threading.Tasks.Task]::WaitAny(@($send, $receive)) | Out-Null; $tcp.Close()"
         ProxyCommand connect.exe %h %p
     /bin/vscodium/app/product.json: >
       {
@@ -26,7 +25,3 @@ server:
   platform: windows
   username: openremotessh
   password: Open-Remote-SSH-1
-
-# tests:
-#   output: |-
-#     ProxyCommand connected

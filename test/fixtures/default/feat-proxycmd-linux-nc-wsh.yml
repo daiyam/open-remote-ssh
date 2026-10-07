@@ -6,16 +6,7 @@ client:
         Port 2222
         User openremotessh
         Password openremotessh
-
-        # ProxyCommand bash -c "exec 3<>/dev/tcp/%h/%p || exit; echo 'ProxyCommand connected' >&2; cat >&3 & cat <&3; wait"
-        # ProxyCommand sh -c 'echo "Connecting via Bastion..."; ssh jump_host -W %h:%p'
-        # ProxyCommand cat ~/.ssh/welcome_message.txt > /dev/tty; nc %h %p
-        # ProxyCommand bash -c 'echo "ProxyCommand connected" > /dev/tty; nc %h %p'
-
-        # ProxyCommand bash -c 'echo "ProxyCommand connected"; nc %h %p'
-        # ProxyCommand bash -c 'nc %h %p'
-        ProxyCommand nc %h %p
-        # ProxyCommand nc %h 22
+        ProxyCommand sh -c 'nc %h %p'
     /bin/vscodium/app/product.json: >
       {
         "nameShort": "VSCodium",
@@ -33,7 +24,3 @@ server:
   image: local-ubuntu-bash
   username: openremotessh
   password: openremotessh
-
-# tests:
-#   output: |-
-#     ProxyCommand connected
