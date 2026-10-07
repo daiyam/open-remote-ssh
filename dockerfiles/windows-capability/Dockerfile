@@ -6,7 +6,7 @@ SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';
 
 RUN `
     # Install
-    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0; `
+    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
 COPY start-sshd.ps1 C:/start-sshd.ps1
 

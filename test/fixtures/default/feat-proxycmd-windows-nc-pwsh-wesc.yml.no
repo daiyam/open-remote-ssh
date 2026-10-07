@@ -6,7 +6,7 @@ client:
         Port 2222
         User openremotessh
         Password Open-Remote-SSH-1
-        ProxyCommand "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "nc %h %p"
+        ProxyCommand "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "nc.exe %h %p"
     /bin/vscodium/app/product.json: >
       {
         "nameShort": "VSCodium",
