@@ -8,8 +8,7 @@ RUN `
     # Install
     Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0; `
     `
-    Get-ChildItem -Path C:\ -Filter connect.exe -Recurse -Depth 20 -ErrorAction SilentlyContinue; `
-    `
+    Get-ChildItem -Path C:\ -Filter connect.exe -Recurse -Depth 20 -ErrorAction SilentlyContinue
 
 COPY start-sshd.ps1 C:/start-sshd.ps1
 
