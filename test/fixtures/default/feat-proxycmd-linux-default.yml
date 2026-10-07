@@ -1,13 +1,21 @@
 client:
   files:
-    'C:\ProgramData\ssh\ssh_config': >
+    /etc/ssh/ssh_config: >
       Host test
         HostName 127.0.0.1
         Port 2222
         User openremotessh
-        Password Open-Remote-SSH-1
-        # ProxyCommand powershell.exe -NoProfile -Command "$tcp = [System.Net.Sockets.TcpClient]::new('%h', [int]%p); [Console]::Error.WriteLine('ProxyCommand connected'); $stream = $tcp.GetStream(); $send = [Console]::OpenStandardInput().CopyToAsync($stream); $receive = $stream.CopyToAsync([Console]::OpenStandardOutput()); [System.Threading.Tasks.Task]::WaitAny(@($send, $receive)) | Out-Null; $tcp.Close()"
-        ProxyCommand "C:\Program Files\Git\mingw64\bin\connect.exe" %h %p
+        Password openremotessh
+
+        # ProxyCommand bash -c "exec 3<>/dev/tcp/%h/%p || exit; echo 'ProxyCommand connected' >&2; cat >&3 & cat <&3; wait"
+        # ProxyCommand sh -c 'echo "Connecting via Bastion..."; ssh jump_host -W %h:%p'
+        # ProxyCommand cat ~/.ssh/welcome_message.txt > /dev/tty; nc %h %p
+        # ProxyCommand bash -c 'echo "ProxyCommand connected" > /dev/tty; nc %h %p'
+
+        # ProxyCommand bash -c 'echo "ProxyCommand connected"; nc %h %p'
+        # ProxyCommand bash -c 'nc %h %p'
+        ProxyCommand nc %h %p
+        # ProxyCommand nc %h 22
     /bin/vscodium/app/product.json: >
       {
         "nameShort": "VSCodium",
@@ -22,10 +30,9 @@ client:
       }
 
 server:
-  image: local-windows-capability
-  platform: windows
+  image: local-ubuntu-bash
   username: openremotessh
-  password: Open-Remote-SSH-1
+  password: openremotessh
 
 # tests:
 #   output: |-
