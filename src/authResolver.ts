@@ -74,7 +74,7 @@ function splitProxyCommand(value: string | string[]): string[] {
     let hasToken = false;
     while (i < value.length) {
         const ch = value[i];
-        if (!isWindows && ch === '\\' && i + 1 < value.length) {
+        if (ch === '\\' && i + 1 < value.length) {
             cur += value[i + 1];
             i += 2;
             hasToken = true;
