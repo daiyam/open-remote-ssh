@@ -11,7 +11,7 @@ RUN `
     # Force TLS 1.2 for the connection
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
     `
-    $url = ('https://github.com/git-for-windows/git/releases/download/v${0}.windows.1/Git-${0}-64-bit.exe' -f $env:GIT_VERSION); `
+    $url = ('https://github.com/git-for-windows/git/releases/download/v{0}.windows.1/Git-{0}-64-bit.exe' -f $env:GIT_VERSION); `
     $dest = ('C:\Git-Installer.exe'); `
     `
     # Download the file
