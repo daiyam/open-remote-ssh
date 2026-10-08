@@ -12,7 +12,6 @@ RUN `
     Set-WinSystemLocale -SystemLocale $env:CULTURE; `
     Set-WinUserLanguageList -LanguageList $languageList -Force; `
     Set-Culture -CultureInfo $env:CULTURE; `
-    Copy-UserInternationalSettingsToSystem -WelcomeScreen $true -NewUser $true; `
     `
     # Install
     Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
