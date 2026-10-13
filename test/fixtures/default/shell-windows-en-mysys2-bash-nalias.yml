@@ -26,5 +26,5 @@ server:
   password: Open-Remote-SSH-1
 
 test:
-  error: |-
+  output: |-
     Detected platform: windows, powershell
