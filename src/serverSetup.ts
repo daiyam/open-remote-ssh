@@ -170,18 +170,40 @@ export async function detectPlatform(conn: Pick<SSHClient, 'exec'>, platform: Re
     let detectedShell: Shell = 'bash';
 
     if (!platform || platform === 'windows') {
-        const { stdout } = await conn.exec('echo %COMSPEC%~$PSHOME');
-        const [comspec, pshome = ''] = stdout.replace(/\r?\n/g, ' ').trim().split('~');
+        const result = await conn.exec('dir ..');
 
-        if (comspec && comspec !== '%COMSPEC%') {
+        if (result.stdout) {
             detectedPlatform = 'windows';
-            detectedShell = 'cmd';
-        } else if (pshome) {
-            detectedShell = 'powershell';
-            detectedPlatform ||= /^[A-Za-z]:\\/.test(pshome) ? 'windows' : 'linux';
-        } else if (!platform) {
-            const { stdout: uname } = await conn.exec('uname -s');
-            detectedPlatform = /MINGW|MSYS|CYGWIN/i.test(uname) ? 'windows' : 'linux';
+
+            if (result.stdout.includes('LastWriteTime')) {
+                detectedShell = 'powershell';
+            } else if (result.stdout.includes('<DIR>')) {
+                detectedShell = 'cmd';
+            } else {
+                detectedShell = 'bash';
+            }
+        }
+
+        if(!detectedPlatform) {
+            const result = await conn.exec('uname -s');
+
+            if (result.stderr) {
+                throw new ServerInstallError(`Cannot execute "uname -s", yields: ${result.stderr}`);
+            }
+
+            const stdout = result.stdout.trim();
+
+            if (stdout.length === 0) {
+                throw new ServerInstallError(`"uname -s" yields empty result`);
+            } else if (stdout.includes('windows32')) {
+                detectedPlatform = 'windows';
+                detectedShell = 'powershell';
+            } else if (stdout.includes('MINGW64')) {
+                detectedPlatform = 'windows';
+                detectedShell = 'bash';
+            } else {
+                detectedPlatform = parseKernelName(stdout);
+            }
         }
 
         logger.trace(`Detected platform: ${detectedPlatform}, ${detectedShell}`);
