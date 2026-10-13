@@ -166,33 +166,44 @@ export function parseMachineArch(stdout: string): Architecture {
 }
 
 export async function detectPlatform(conn: Pick<SSHClient, 'exec'>, platform: RemotePlatform | undefined, logger: Pick<Log, 'trace'>): Promise<DetectedPlatform> {
-    let detectedPlatform: Platform;
+    let detectedPlatform: Platform | undefined = undefined;
     let detectedShell: Shell = 'bash';
 
     if (!platform || platform === 'windows') {
-        const result = await conn.exec('uname -s');
-        const stdout = result.stdout.trim();
+        const result = await conn.exec('dir ..');
 
-        if (result.stderr) {
-            if (result.stderr.includes('FullyQualifiedErrorId : CommandNotFoundException')) {
-                detectedPlatform = 'windows';
+        if (result.stdout) {
+            detectedPlatform = 'windows';
+
+            if (result.stdout.includes('LastWriteTime')) {
                 detectedShell = 'powershell';
-            } else if (result.stderr.includes('is not recognized as an internal or external command')) {
-                detectedPlatform = 'windows';
+            } else if (result.stdout.includes('<DIR>')) {
                 detectedShell = 'cmd';
             } else {
+                detectedShell = 'bash';
+            }
+        }
+
+        if(!detectedPlatform) {
+            const result = await conn.exec('uname -s');
+
+            if (result.stderr) {
                 throw new ServerInstallError(`Cannot execute "uname -s", yields: ${result.stderr}`);
             }
-        } else if (stdout.length === 0) {
-            throw new ServerInstallError(`"uname -s" yields empty result`);
-        } else if (stdout.includes('windows32')) {
-            detectedPlatform = 'windows';
-            detectedShell = 'powershell';
-        } else if (stdout.includes('MINGW64')) {
-            detectedPlatform = 'windows';
-            detectedShell = 'bash';
-        } else {
-            detectedPlatform = parseKernelName(stdout);
+
+            const stdout = result.stdout.trim();
+
+            if (stdout.length === 0) {
+                throw new ServerInstallError(`"uname -s" yields empty result`);
+            } else if (stdout.includes('windows32')) {
+                detectedPlatform = 'windows';
+                detectedShell = 'powershell';
+            } else if (stdout.includes('MINGW64')) {
+                detectedPlatform = 'windows';
+                detectedShell = 'bash';
+            } else {
+                detectedPlatform = parseKernelName(stdout);
+            }
         }
 
         logger.trace(`Detected platform: ${detectedPlatform}, ${detectedShell}`);
@@ -221,7 +232,7 @@ export async function detectPlatform(conn: Pick<SSHClient, 'exec'>, platform: Re
 
     logger.trace(`Detected architecture: ${detectedArch}`);
 
-    return { detectedPlatform, detectedArch, detectedShell };
+    return { detectedPlatform: detectedPlatform!, detectedArch, detectedShell };
 }
 
 export async function installCodeServer(
