@@ -20,11 +20,11 @@ client:
       }
 
 server:
-  image: local-windows-en-msys2-cmd
+  image: local-windows-en-msys2-bash-walias
   platform: windows
   username: openremotessh
   password: Open-Remote-SSH-1
 
 test:
   output: |-
-    Detected platform: windows, cmd
+    Detected platform: windows, bash
