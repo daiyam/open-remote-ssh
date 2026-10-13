@@ -21,6 +21,7 @@ RUN `
     # Extract and cleanup
     $process = Start-Process -FilePath $dest -ArgumentList '/VERYSILENT /NORESTART /SP- /SUPPRESSMSGBOXES /DIR="C:\Program Files\Git"' -Wait -PassThru; `
     if ($process.ExitCode -ne 0) { throw "Git for Windows installer failed with exit code $($process.ExitCode)" }; `
+    if (-not (Test-Path 'C:\Program Files\Git\bin\bash.exe')) { throw 'Git for Windows was not installed to C:\Program Files\Git' }; `
     Remove-Item $dest; `
     `
     # Install

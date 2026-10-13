@@ -15,6 +15,7 @@ Port 2222
 PasswordAuthentication yes
 PubkeyAuthentication yes
 Subsystem sftp /usr/lib/ssh/sftp-server
+SetEnv MSYSTEM=MINGW64
 "@
 
 [System.IO.Directory]::CreateDirectory('C:/msys64/etc/ssh') | Out-Null
@@ -22,7 +23,7 @@ Subsystem sftp /usr/lib/ssh/sftp-server
 
 New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 2222 -ErrorAction SilentlyContinue
 
-& 'C:/msys64/usr/bin/bash.exe' -lc 'ssh-keygen -A && exec sshd -D -e'
+& 'C:/msys64/usr/bin/bash.exe' -lc 'ssh-keygen -A && exec /usr/bin/sshd -D -e'
 if ($LASTEXITCODE -ne 0) {
     throw "MSYS2 sshd exited with code $LASTEXITCODE"
 }
