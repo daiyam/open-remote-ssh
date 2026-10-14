@@ -27,4 +27,4 @@ server:
 
 test:
   output: |-
-    Detected platform: windows, powershell
+    Detected platform: windows, bash
